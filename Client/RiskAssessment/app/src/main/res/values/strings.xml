@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RiskAssessment</string>
+    <string name="enter_app_title_hint">Please enter the title of the app...</string>
+    <string name="query_button_text">Risk Assessment please!</string>
+</resources>
