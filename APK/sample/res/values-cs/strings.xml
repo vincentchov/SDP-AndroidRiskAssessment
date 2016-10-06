@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">USAT Card</string>
+    <string name="app_version">APP_VERSION</string>
+    <string name="button_install">Instalovat</string>
+    <string name="button_exit">Konec</string>
+    <string name="title_adobe_air"><b>Adobe® AIR®</b></string>
+    <string name="text_runtime_required">"Tato aplikace vyžaduje prostředí Adobe AIR.
+
+"</string>
+    <string name="text_install_runtime">Chcete-li pokračovat, nainstalujte do tohoto zařízení prostředí Adobe AIR.</string>
+    <string name="text_runtime_on_external_storage">Chcete-li pokračovat, buď nainstalujte prostředí Adobe AIR do tohoto zařízení, nebo tuto aplikaci ukončete a před opakovaným spuštěním připojte kartu SD obsahující prostředí Adobe AIR.</string>
+</resources>

@@ -1,0 +1,125 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android)
+SHA1-Digest-Manifest: 6lsFRfLISELTBNrjxf5zTRQgrqM=
+
+Name: assets/META-INF/AIR/application.xml
+SHA1-Digest: dQhSsavXTNQ7FmYUgg/ampUpwgU=
+
+Name: assets/images/SlideArrowLeft.png
+SHA1-Digest: ugXvtgOcxUpEci3aFL8JuuKWzWk=
+
+Name: assets/MembershipCardApp.swf
+SHA1-Digest: GnrQZeUc116hL84xyXTqMa0R3Vg=
+
+Name: assets/images/SlideArrowLeft-568h@2x.png
+SHA1-Digest: W6lsxw78U5RXs61VVAlsUoS4alA=
+
+Name: assets/META-INF/AIR/extensions/com.freshplanet.AirAlert/catalog.
+ xml
+SHA1-Digest: YZB5KeNavoLx9CS/5Vxb1ht3AGU=
+
+Name: assets/icons/icon152.png
+SHA1-Digest: xrv0opLIOzUK1GpvYXYqsdqSdDk=
+
+Name: assets/META-INF/AIR/extensions/com.freshplanet.AirAlert/META-INF
+ /ANE/Android-ARM/library.swf
+SHA1-Digest: 3GXEoKpDq81Gz8NVnPxNORFegUk=
+
+Name: assets/META-INF/AIR/extensions/com.freshplanet.AirAlert/library.
+ swf
+SHA1-Digest: tFs8YoYJlvmEbUETHwnlCZrdWIo=
+
+Name: resources.arsc
+SHA1-Digest: 1d9NP+b/RU8dFfRaf/huJqoMIto=
+
+Name: assets/Default-568h@2x.png
+SHA1-Digest: xIBVrSgFmn3SfOMX2sYAp0FKWpE=
+
+Name: assets/images/Background.png
+SHA1-Digest: JQodzIcxJfBPCdiDI2K8Lz3cEmw=
+
+Name: res/raw/debuginfo
+SHA1-Digest: cVd++6Ne6U1BlNgU31/w7Tqbyd4=
+
+Name: assets/images/Banner.png
+SHA1-Digest: iY+wF9yseSBo+Y7P8jHcU+8oHuE=
+
+Name: AndroidManifest.xml
+SHA1-Digest: QO3SljCPX4KIXkkdl2iTY4qXtJ8=
+
+Name: res/drawable-ldpi/icon.png
+SHA1-Digest: vuMBxGgduiHSgrqB48tibwqzCNk=
+
+Name: lib/armeabi-v7a/libNativeABI.so
+SHA1-Digest: QvCvjdaVgm+8lH5tJQQLDUIdre4=
+
+Name: assets/icons/icon76.png
+SHA1-Digest: mErmGFQDC7vrESkH91WeyJeueZI=
+
+Name: assets/images/Background-568h@2x.png
+SHA1-Digest: LqI6jPeG3brnpmX6IEhdeBILTPo=
+
+Name: assets/icons/icon48.png
+SHA1-Digest: 6vLf4KrbkyFoP5j9Sg64QsoxrB8=
+
+Name: res/drawable-xxhdpi/icon.png
+SHA1-Digest: orsdFHPQ5BezBgEDpTDi+rb1UGk=
+
+Name: res/drawable-mdpi/icon.png
+SHA1-Digest: 67Mr+gRRmsPHfUp/aX8ljPBxajU=
+
+Name: assets/images/SlideArrowRight.png
+SHA1-Digest: ATIGmHDzKy99sbjAb5M6DjPKszg=
+
+Name: assets/icons/icon57.png
+SHA1-Digest: AV/Ytx6cuD2+asDJ/C3xaEpkcE0=
+
+Name: assets/icons/icon128.png
+SHA1-Digest: 56oj2INbQMRoq5Z4uautJvWyuCw=
+
+Name: assets/icons/icon36.png
+SHA1-Digest: WlblMjMIliE/2i85woRIaUyQ+1I=
+
+Name: res/drawable-xhdpi/icon.png
+SHA1-Digest: gHrUiPhz7b0pQYssBhDOUvtqkc4=
+
+Name: assets/icons/icon72.png
+SHA1-Digest: Pr8c/8iRTWaHevjdPtZ17KVU4fE=
+
+Name: assets/icons/icon32.png
+SHA1-Digest: PALOrNNskRDY+8hgL6sM9Aqg7jc=
+
+Name: assets/images/Banner-568h@2x.png
+SHA1-Digest: la59fcntrKuMAPvFTCALJAH7dZ0=
+
+Name: assets/icons/icon16.png
+SHA1-Digest: BcEKzXv+/3AYwKBndBnr/mAUlps=
+
+Name: classes.dex
+SHA1-Digest: itWRX4oJsAwc75Tcoy51ipkdGg4=
+
+Name: assets/icons/icon114.png
+SHA1-Digest: JYTmwvNg2qYBMeZOa02IlITikbE=
+
+Name: assets/META-INF/AIR/extensions/com.freshplanet.AirAlert/META-INF
+ /ANE/extension.xml
+SHA1-Digest: ELsgx0cxKqZxcY2NOGln0/oh5kE=
+
+Name: res/drawable/mp_warning_32x32_n.png
+SHA1-Digest: AYeAlZLgIg2apaASwxgKglh876U=
+
+Name: assets/icons/icon120.png
+SHA1-Digest: Rf70rg+Tz9o8QEG4eXDc5TCaXb0=
+
+Name: assets/Default@2x.png
+SHA1-Digest: S/YK03UT6iUINSudDuXCN168Sdc=
+
+Name: assets/images/SlideArrowRight-568h@2x.png
+SHA1-Digest: +YberU64EF2JuLIWq07OqBcJL44=
+
+Name: res/drawable-hdpi/icon.png
+SHA1-Digest: g8yFvoOBvPQTar713n/JVUHee40=
+
+Name: res/drawable-xhdpi/ouya_icon.png
+SHA1-Digest: Wt3rB01oA9YiSpYjbynUcDJ3q2c=
+

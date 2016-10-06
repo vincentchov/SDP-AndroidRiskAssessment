@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">USAT Card</string>
+    <string name="app_version">APP_VERSION</string>
+    <string name="button_install">Installa</string>
+    <string name="button_exit">Esci</string>
+    <string name="title_adobe_air"><b>Adobe® AIR®</b></string>
+    <string name="text_runtime_required">"Questa applicazione richiede Adobe AIR.
+
+"</string>
+    <string name="text_install_runtime">Per continuare, installate Adobe AIR su questo dispositivo.</string>
+    <string name="text_runtime_on_external_storage">"Per continuare, installate Adobe AIR su questo dispositivo oppure uscite dall'applicazione e montate la scheda SD che contiene Adobe AIR prima di riavviarla."</string>
+</resources>
