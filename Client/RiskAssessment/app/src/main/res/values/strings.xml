@@ -2,4 +2,6 @@
     <string name="app_name">RiskAssessment</string>
     <string name="enter_app_title_hint">Please enter the title of the app...</string>
     <string name="query_button_text">Risk Assessment please!</string>
+    <string name="greeting">Hi there! You\'re here because you shared an app!</string>
+    <string name="whyYouNoLinkToApp">You didn\'t share a Play Store app\'s page though.  Check yo self before you wreck yo self, fool.</string>
 </resources>
