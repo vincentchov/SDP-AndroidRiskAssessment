@@ -110,13 +110,17 @@ public class SendAppActivity extends AppCompatActivity {
             // This array contains two dictionaries of dictionaries
             JSONArray riskFactorsArray = riskFactorsOuter.getJSONArray("risk_factors");
 
-            JSONObject knownMalware = riskFactorsArray.getJSONObject(0);
+            JSONObject knownMalwareWrapper = riskFactorsArray.getJSONObject(0);
+            Log.i("knownMalware", knownMalwareWrapper.toString());
+
+            JSONObject knownMalware = knownMalwareWrapper.getJSONObject("known_malware");
             String KMpresent = knownMalware.getString("present");
             String KMweight = knownMalware.getString("weight");
 
-            JSONObject requestsRoot = riskFactorsArray.getJSONObject(1);
-            String RRpresent = knownMalware.getString("present");
-            String RRweight = knownMalware.getString("weight");
+            JSONObject requestsRootWrapper = riskFactorsArray.getJSONObject(1);
+            JSONObject requestsRoot = requestsRootWrapper.getJSONObject("requests_root");
+            String RRpresent = requestsRoot.getString("present");
+            String RRweight = requestsRoot.getString("weight");
 
             String totalWeight = riskFactorsOuter.getString("total_weight");
             String weightRatio = riskFactorsOuter.getString("weight_ratio");
@@ -131,6 +135,8 @@ public class SendAppActivity extends AppCompatActivity {
             String overallScore = riskAssessment.getString("overall_score");
             String rating = riskAssessment.getString("rating");
 
+            Log.i("parseRiskAssessment", "Finally done with this!");
+            
         } catch (JSONException e) {
             e.printStackTrace();
         }
