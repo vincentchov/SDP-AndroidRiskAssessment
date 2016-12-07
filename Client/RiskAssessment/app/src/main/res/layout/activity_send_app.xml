@@ -18,7 +18,8 @@
         android:id="@+id/greetingTV"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:visibility="visible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,5 +28,138 @@
         android:id="@+id/sharedTV"
         android:layout_below="@+id/greetingTV"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="invisible"
+        android:id="@+id/AssessLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_APP_NAME"
+            android:id="@+id/TV_APP_NAME"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="@string/TAG_RISK_FACTORS"
+            android:id="@+id/TV_RISK_FACTORS"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="@string/TAG_KNOWN_MALWARE"
+            android:id="@+id/TV_KNOWN_MALWARE"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_MALWARE_PRESENT"
+            android:id="@+id/TV_MALWARE_PRESENT"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_MALWARE_WEIGHT"
+            android:id="@+id/TV_MALWARE_WEIGHT"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="@string/TAG_REQUESTS_ROOT"
+            android:id="@+id/TV_REQUESTS_ROOT"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_RR_PRESENT"
+            android:id="@+id/TV_RR_PRESENT"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_RR_WEIGHT"
+            android:id="@+id/TV_RR_WEIGHT"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_RF_WEIGHT"
+            android:id="@+id/TV_RF_WEIGHT"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_RF_WEIGHT_RATIO"
+            android:id="@+id/TV_RF_WEIGHT_RATIO"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_RF_TOTAL"
+            android:id="@+id/TV_RF_TOTAL"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="@string/TAG_PERMISSION_DANGERS"
+            android:id="@+id/TV_PERMISSION_DANGERS"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_LOCATION_DANGER"
+            android:id="@+id/TV_LOCATION_DANGER"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_DP_TOTAL"
+            android:id="@+id/TV_DP_TOTAL"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_OVERALL"
+            android:id="@+id/TV_OVERALL"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TAG_RATING"
+            android:id="@+id/TV_RATING"/>
+    </LinearLayout>
 </RelativeLayout>
