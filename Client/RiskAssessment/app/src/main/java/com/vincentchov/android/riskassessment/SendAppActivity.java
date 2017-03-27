@@ -44,19 +44,6 @@ public class SendAppActivity extends AppCompatActivity {
     TextView _overallTV;
     TextView _ratingTV;
 
-//    String TAG_RISK_FACTORS = getString(R.string.TAG_RISK_FACTORS);
-//    String TAG_KNOWN_MALWARE = getString(R.string.TAG_KNOWN_MALWARE);
-//    String TAG_MALWARE_PRESENT = getString(R.string.TAG_MALWARE_PRESENT);
-//    String TAG_MALWARE_WEIGHT = getString(R.string.TAG_MALWARE_WEIGHT);
-//    String TAG_RF_WEIGHT = getString(R.string.TAG_RF_WEIGHT);
-//    String TAG_RF_WEIGHT_RATIO = getString(R.string.TAG_RF_WEIGHT_RATIO);
-//    String TAG_RF_TOTAL = getString(R.string.TAG_RF_TOTAL);
-//    String TAG_PERMISSION_DANGERS = getString(R.string.TAG_PERMISSION_DANGERS);
-//    String TAG_LOCATION_DANGER = getString(R.string.TAG_LOCATION_DANGER);
-//    String TAG_DP_TOTAL = getString(R.string.TAG_DP_TOTAL);
-//    String TAG_OVERALL = getString(R.string.TAG_OVERALL);
-//    String TAG_RATING = getString(R.string.TAG_RATING);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +104,7 @@ public class SendAppActivity extends AppCompatActivity {
             }, 3000);
 
         } else {
-            _sharedTV.setText(R.string.whyYouNoLinkToApp);
+//            _sharedTV.setText(R.string.whyYouNoLinkToApp);
         }
     }
 
