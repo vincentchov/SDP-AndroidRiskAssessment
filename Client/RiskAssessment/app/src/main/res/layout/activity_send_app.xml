@@ -53,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold"
             android:text="@string/TAG_RISK_FACTORS"
             android:id="@+id/TV_RISK_FACTORS"/>
 
@@ -61,77 +60,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold"
-            android:text="@string/TAG_KNOWN_MALWARE"
-            android:id="@+id/TV_KNOWN_MALWARE"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_MALWARE_PRESENT"
-            android:id="@+id/TV_MALWARE_PRESENT"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_MALWARE_WEIGHT"
-            android:id="@+id/TV_MALWARE_WEIGHT"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold"
-            android:text="@string/TAG_REQUESTS_ROOT"
-            android:id="@+id/TV_REQUESTS_ROOT"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RR_PRESENT"
-            android:id="@+id/TV_RR_PRESENT"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RR_WEIGHT"
-            android:id="@+id/TV_RR_WEIGHT"/>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RF_WEIGHT"
-            android:id="@+id/TV_RF_WEIGHT"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RF_WEIGHT_RATIO"
-            android:id="@+id/TV_RF_WEIGHT_RATIO"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RF_TOTAL"
-            android:id="@+id/TV_RF_TOTAL"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold"
             android:text="@string/TAG_PERMISSION_DANGERS"
             android:id="@+id/TV_PERMISSION_DANGERS"/>
         <TextView
@@ -139,15 +67,15 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_LOCATION_DANGER"
-            android:id="@+id/TV_LOCATION_DANGER"/>
+            android:text="@string/TAG_SYSTEM_PERMISSIONS"
+            android:id="@+id/TV_SYSTEM_PERMISSIONS"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_DP_TOTAL"
-            android:id="@+id/TV_DP_TOTAL"/>
+            android:text="@string/TAG_TOTAL"
+            android:id="@+id/TV_TOTAL"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

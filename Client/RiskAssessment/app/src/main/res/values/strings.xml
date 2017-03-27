@@ -8,19 +8,11 @@
     <string name="assRecvd">Just received the assessment!</string>
     <string name="assessment">Here\'s your risk assessment. Below are the points contributed by each section.</string>
     <string name="TAG_APP_NAME">App Name: %1$s</string>
-    <string name="TAG_RISK_FACTORS">Risk Factors</string>
-    <string name="TAG_KNOWN_MALWARE">Known Malware: </string>
-    <string name="TAG_MALWARE_PRESENT">\tPresent: %1$s</string>
-    <string name="TAG_MALWARE_WEIGHT">\tWeight: %1$s</string>
-    <string name="TAG_REQUESTS_ROOT">Requests root:</string>
-    <string name="TAG_RR_PRESENT">\tPresent: %1$s</string>
-    <string name="TAG_RR_WEIGHT">\tWeight: %1$s</string>
-    <string name="TAG_RF_WEIGHT">Total weight of Risk Factors: %1$s</string>
-    <string name="TAG_RF_WEIGHT_RATIO">Weight ratio of Risk Factors: %1$s</string>
-    <string name="TAG_RF_TOTAL">Total points contributed: %1$s</string>
-    <string name="TAG_PERMISSION_DANGERS">Dangerous Permissions:</string>
-    <string name="TAG_LOCATION_DANGER">\tLocation Access: %1$s</string>
-    <string name="TAG_DP_TOTAL">Total points contributed: %1$s</string>
+    <string name="TAG_APP_ID">App ID: %1$s</string>
+    <string name="TAG_RISK_FACTORS">Risk Factors: \n\t%1$s</string>
+    <string name="TAG_PERMISSION_DANGERS">Dangerous Permissions: \n\t%1$s</string>
+    <string name="TAG_SYSTEM_PERMISSIONS">System Permissions: \n\t%1$s</string>
+    <string name="TAG_TOTAL">Total points contributed: %1$s</string>
     <string name="TAG_OVERALL">Overall Score: %1$s</string>
     <string name="TAG_RATING">Rating: %1$s</string>
 </resources>
