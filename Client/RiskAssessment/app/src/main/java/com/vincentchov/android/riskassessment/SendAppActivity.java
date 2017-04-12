@@ -74,22 +74,14 @@ public class SendAppActivity extends AppCompatActivity {
             _sharedTV.setText(sharedText);
             Toast.makeText(getApplicationContext(), R.string.sentRequest, Toast.LENGTH_LONG).show();
 
+
             // Wait two seconds
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(getApplicationContext(), R.string.assRecvd, Toast.LENGTH_LONG).show();
-                    JSONObject riskAssessment = loadJSONObject();             // Load the JSONObject
-                    try {
-                        JSONObject score = riskAssessment.getJSONObject("score");
-                        parseRiskAssessment(score);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-
+                    loadJSONObject();
                     _greetingTV.setVisibility(View.GONE);
                     _sharedTV.setVisibility(View.GONE);
                     mLinearLayout.setVisibility(View.VISIBLE);       // Make the assessments visible
@@ -101,7 +93,7 @@ public class SendAppActivity extends AppCompatActivity {
         }
     }
 
-    public JSONObject loadJSONObject() {
+    public void loadJSONObject() {
         String jsonString = null;
         _jsonObject = null;
         try {
@@ -129,6 +121,13 @@ public class SendAppActivity extends AppCompatActivity {
                         _jsonObject = new JSONObject(jsonData);
                         Log.i("loadJSONObject", _jsonObject.toString());
 
+                        final JSONObject score = _jsonObject.getJSONObject("score");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                parseRiskAssessment(score);
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -138,10 +137,7 @@ public class SendAppActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.i("Info", "Risk Assessment loaded!");
-
-        Log.i("loadJSONObject b4return", _jsonObject.toString());
-
-        return _jsonObject;
+//        return _jsonObject;
     }
 
     void parseRiskAssessment(JSONObject riskAssessment){
