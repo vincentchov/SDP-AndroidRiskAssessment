@@ -18,6 +18,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 
 public class SendAppActivity extends AppCompatActivity {
     TextView _sharedTV;
@@ -30,6 +36,7 @@ public class SendAppActivity extends AppCompatActivity {
     TextView _appNameTV;
     TextView _totalTV;
     TextView _overallTV;
+    JSONObject _jsonObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +81,15 @@ public class SendAppActivity extends AppCompatActivity {
                 public void run() {
                     Toast.makeText(getApplicationContext(), R.string.assRecvd, Toast.LENGTH_LONG).show();
                     JSONObject riskAssessment = loadJSONObject();             // Load the JSONObject
-                    parseRiskAssessment(riskAssessment);
+                    try {
+                        JSONObject score = riskAssessment.getJSONObject("score");
+                        parseRiskAssessment(score);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     _greetingTV.setVisibility(View.GONE);
                     _sharedTV.setVisibility(View.GONE);
                     mLinearLayout.setVisibility(View.VISIBLE);       // Make the assessments visible
@@ -88,37 +103,54 @@ public class SendAppActivity extends AppCompatActivity {
 
     public JSONObject loadJSONObject() {
         String jsonString = null;
+        _jsonObject = null;
         try {
-            InputStream inputStream = getApplicationContext().
-                                      getResources().
-                                      openRawResource(R.raw.google_earth);
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            jsonString = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("http://androidrisk.uconn.edu/report/foobar")
+                    .build();
 
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(jsonString);
-        } catch (JSONException e) {
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(response.isSuccessful() == false){
+                        throw new IOException("Unexpected code: " + response);
+                    }
+
+                    String jsonData = response.body().string();
+                    Log.i("loadJSONObject string", jsonData);
+
+                    try {
+                        _jsonObject = new JSONObject(jsonData);
+                        Log.i("loadJSONObject", _jsonObject.toString());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e){
             e.printStackTrace();
         }
         Log.i("Info", "Risk Assessment loaded!");
 
-        return jsonObject;
+        Log.i("loadJSONObject b4return", _jsonObject.toString());
+
+        return _jsonObject;
     }
 
     void parseRiskAssessment(JSONObject riskAssessment){
         try {
             Log.i("parseRiskAssessment", "Parsing!");
 
-            // App name
+//            // App name
             String appName = riskAssessment.getString("app_name");
+            System.out.println(riskAssessment.getString("app_name"));
             _appNameTV.setText(getString(R.string.TAG_APP_NAME, appName));
 
             // Risk Factors
