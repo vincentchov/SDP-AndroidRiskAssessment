@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,35 +145,46 @@ public class SendAppActivity extends AppCompatActivity {
         try {
             Log.i("parseRiskAssessment", "Parsing!");
 
-//            // App name
+            // AppID
+            String appID = riskAssessment.getString("app_id");
+
+            // App name
             String appName = riskAssessment.getString("app_name");
             System.out.println(riskAssessment.getString("app_name"));
             _appNameTV.setText(getString(R.string.TAG_APP_NAME, appName));
 
-            // Risk Factors
-            String riskFactors = riskAssessment.getString("risk_factors");
-            _riskFactorsTV.setText(getString(R.string.TAG_RISK_FACTORS, riskFactors));
-
-            // Skipping AppID for now
-
-            // Dangerous permissions
-            JSONArray dangerousArray = riskAssessment.getJSONArray("dangerous_permissions");
-            _permissionDangersTV.setText(getString(R.string.TAG_PERMISSION_DANGERS, dangerousArray.toString()));
-
-            // System permissions
-            JSONArray systemPermissionsArray = riskAssessment.getJSONArray("system_permissions");
-            _systemPermissionsTV.setText(getString(R.string.TAG_SYSTEM_PERMISSIONS, systemPermissionsArray.toString()));
-
-            // Total points contributed
-            String totalPointsContributed = riskAssessment.getString("total_points_contributed");
-            _totalTV.setText(getString(R.string.TAG_TOTAL, totalPointsContributed));
-
             String overallScore = riskAssessment.getString("overall_score");
             _overallTV.setText(getString(R.string.TAG_OVERALL, overallScore));
+
+            // Permissions
+            JSONObject permissions = riskAssessment.getJSONObject("permissions");
+
+            // Dangerous permissions
+            JSONObject dangerous_permissions = permissions.getJSONObject("dangerous_permissions");
+            String dangerous_permissions_string = "";
+            Iterator<?> dangerous_permissions_keys = dangerous_permissions.keys();
+            while (dangerous_permissions_keys.hasNext()){
+                 dangerous_permissions_string += dangerous_permissions_keys.next() + "\n\t";
+            }
+            _permissionDangersTV.setText(getString(R.string.TAG_PERMISSION_DANGERS, dangerous_permissions_string));
+
+            // Total points contributed
+            String totalPointsContributed = permissions.getString("total_points_contributed");
+            _totalTV.setText(getString(R.string.TAG_TOTAL, totalPointsContributed));
 
             // Rating
             String rating = riskAssessment.getString("rating");
             _ratingTV.setText(getString(R.string.TAG_RATING, rating));
+
+            // Risk Factors
+            JSONObject risk_factors = riskAssessment.getJSONObject("risk_factors");
+            JSONObject risk_factors_identified = risk_factors.getJSONObject("risk_factors_identified");
+            Iterator<?> risk_factors_keys = risk_factors_identified.keys();
+            String risk_factors_string = "";
+            while(risk_factors_keys.hasNext()){
+                risk_factors_string += risk_factors_keys.next() + "\n";
+            }
+            _riskFactorsTV.setText(getString(R.string.TAG_RISK_FACTORS, risk_factors_string));
 
             Log.i("parseRiskAssessment", "Finally done with this!");
 

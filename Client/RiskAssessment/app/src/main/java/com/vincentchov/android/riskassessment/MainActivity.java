@@ -22,40 +22,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Log.i("Info","Building the OkHttpClient");
-
-        try {
-            OkHttpClient okHttpClient = new OkHttpClient();
-            Request request = new Request.Builder()
-                                         .url("http://androidrisk.uconn.edu/report/foobar")
-                                         .build();
-
-            okHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if(response.isSuccessful() == false){
-                        throw new IOException("Unexpected code: " + response);
-                    }
-
-                    String jsonData = response.body().string();
-                    JSONObject jsonObject;
-                    try {
-                        jsonObject = new JSONObject(jsonData);
-                        System.out.println(jsonObject.getJSONObject("score").keys());
-                        Log.i("JSON output", jsonObject.toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

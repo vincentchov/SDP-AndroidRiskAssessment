@@ -1,21 +1,23 @@
 {
-  "app_name": "Google Earth",
-  "risk_factors": {
-    "risk_factors":[
-      {"known_malware": {
-          "present":0,
-          "weight":3}},
-      {"requests_root": {
-        "present":0,
-        "weight":3}}],
-    "total_weight": 0,
-    "weight_ratio": 0,
-    "total_points_contributed": 0
-  },
-  "dangerous_permissions": {
-    "dangerous_permissions":[{"location":1}],
-    "total_points_contributed": 1
-  },
-  "overall_score": 1,
-  "rating": "no risk"
+  "report_exists": true,
+  "score": {
+    "app_id": "manifest",
+    "app_name": "com.google.earth",
+    "overall_score": 1,
+    "permissions": {
+      "dangerous_permissions": {
+        "ACCESS_COARSE_LOCATION": "dangerous",
+        "ACCESS_FINE_LOCATION": "dangerous",
+        "GET_ACCOUNTS": "dangerous",
+        "MANAGE_ACCOUNTS": "dangerous",
+        "USE_CREDENTIALS": "dangerous"
+      },
+      "total_points_contributed": 1
+    },
+    "rating": "Low risk",
+    "risk_factors": {
+      "risk_factors_identified": {},
+      "total_points_contributed": 0
+    }
+  }
 }
