@@ -1,26 +1,21 @@
 package com.vincentchov.android.riskassessment;
 
-import android.util.Log;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class ExpandableListDataPump {
+    private static HashMap<String, List<String>> mExpandableListDetail;
+
     public static HashMap<String, List<String>> getData() {
-        HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+        mExpandableListDetail = new HashMap<String, List<String>>();
         // AppID
         String appID = "com.google.earth";
-        List<String> app_ID = new ArrayList<String>();
-        app_ID.add(appID);
 
         // App name
-        String appName = "com.google.earth";
+        String appName = "Google Earth";
 
-        String overallScore = "1";
+        String overallScore = "5";
 
         // Dangerous permissions
         List<String> dangerous_permissions = new ArrayList<String>();
@@ -38,14 +33,15 @@ public class ExpandableListDataPump {
         // Risk Factors
         List<String> riskFactors = new ArrayList<String>();
         riskFactors.add("Risk factors identfied: None");
-        riskFactors.add("Total points contributed: 1");
+        riskFactors.add("Total points contributed: 4");
 
-//        List<List<String>> stuff = new ArrayList<List<String>>();
-//        stuff.add(dangerous_permissions);
-//        expandableListDetail.put("Stuff", stuff);
-//        expandableListDetail.put("AppID", app_ID);
-        expandableListDetail.put("Dangerous permissions", dangerous_permissions);
-        expandableListDetail.put("Risk Factors", riskFactors);
-        return expandableListDetail;
+        // Threats
+        List<String> threats = new ArrayList<String>();
+        threats.add("This application contains at least one system-level or developer-defined permission. These types of permissions can exhibit behavior that is not typical of any other permission, and cannot be detected by our algorithm. Most often, these permissions are used for harmless purposes, but they are liable to do anything with the information they are provided.");
+
+        mExpandableListDetail.put("Dangerous permissions", dangerous_permissions);
+        mExpandableListDetail.put("Risk Factors", riskFactors);
+        mExpandableListDetail.put("Threats", threats);
+        return mExpandableListDetail;
     }
 }

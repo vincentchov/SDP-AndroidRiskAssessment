@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         generalListView = (ListView) findViewById(R.id.generalListView);
         generalInfoList = new ArrayList<String>();
         generalInfoList.add(String.format("App ID: %s", "com.google.earth"));
-        generalInfoList.add(String.format("App Name: %s", "com.google.earth"));
-        generalInfoList.add(String.format("Overall Score: %s", "1"));
+        generalInfoList.add(String.format("App Name: %s", "Google Earth"));
+        generalInfoList.add(String.format("Overall Score: %s", "5"));
         generalListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, generalInfoList);
         generalListView.setAdapter(generalListViewAdapter);
 
