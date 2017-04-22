@@ -1,10 +1,36 @@
 {
-  "dangerous_permissions":["WRITE_CALL_LOG","READ_PHONE_STATE","BODY_SENSORS"],
-  "risk_factors":"test_risk_factors",
-  "app_id":"test_id",
-  "rating":"Low risk",
-  "system_permissions":["TEST_SYSTEM_PERMISSION"],
-  "app_name":"test_name",
-  "total_points_contributed":2,
-  "overall_score":2
+  "report_exists": true, 
+  "score": {
+    "app_id": "com.google.earth", 
+    "app_name": "com.google.earth", 
+    "overall_score": 5, 
+    "permissions": {
+      "dangerous_permissions": {
+        "ACCESS_COARSE_LOCATION": "dangerous", 
+        "ACCESS_FINE_LOCATION": "dangerous", 
+        "GET_ACCOUNTS": "dangerous"
+      }, 
+      "normal_permissions": [
+        "INTERNET", 
+        "ACCESS_NETWORK_STATE", 
+        "WRITE_EXTERNAL_STORAGE", 
+        "VIBRATE", 
+        "NFC", 
+        "GET_PACKAGE_SIZE"
+      ], 
+      "total_points_contributed": 1
+    }, 
+    "rating": "", 
+    "risk_factors": {
+      "risk_factors_identified": {
+        "test": 3
+      }, 
+      "total_points_contributed": 4
+    }, 
+    "threats": [
+      "This application contains at least one system-level or developer-defined permission. These types of permissions can exhibit behavior that is not typical of any other permission, and cannot be detected by our algorithm. Most often, these permissions are used for harmless purposes, but they are liable to do anything with the information they are provided."
+    ]
+  }, 
+  "task_id": "e9f17a2f-c19c-45ca-b177-dfaefefb6410", 
+  "task_state": "SUCCESS"
 }
