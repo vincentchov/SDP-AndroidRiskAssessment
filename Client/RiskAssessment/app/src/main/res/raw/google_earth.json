@@ -2,22 +2,13 @@
   "report_exists": true, 
   "score": {
     "app_id": "com.google.earth", 
-    "app_name": "com.google.earth", 
-    "overall_score": 5, 
+    "overall_score": 5,
     "permissions": {
       "dangerous_permissions": {
         "ACCESS_COARSE_LOCATION": "dangerous", 
         "ACCESS_FINE_LOCATION": "dangerous", 
         "GET_ACCOUNTS": "dangerous"
       }, 
-      "normal_permissions": [
-        "INTERNET", 
-        "ACCESS_NETWORK_STATE", 
-        "WRITE_EXTERNAL_STORAGE", 
-        "VIBRATE", 
-        "NFC", 
-        "GET_PACKAGE_SIZE"
-      ], 
       "total_points_contributed": 1
     }, 
     "rating": "", 
