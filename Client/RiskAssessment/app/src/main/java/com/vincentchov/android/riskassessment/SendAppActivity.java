@@ -1,19 +1,26 @@
 package com.vincentchov.android.riskassessment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,16 +34,16 @@ import okhttp3.Response;
 
 
 public class SendAppActivity extends AppCompatActivity {
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    List<String> expandableListTitle;
+    HashMap<String, List<String>> expandableListDetail;
+    List<String> generalInfoList;
+    ListView generalListView;
+    ArrayAdapter generalListViewAdapter;
+
     TextView _sharedTV;
     TextView _greetingTV;
-    LinearLayout mLinearLayout;
-    TextView _permissionDangersTV;
-    TextView _riskFactorsTV;
-    TextView _systemPermissionsTV;
-    TextView _ratingTV;
-    TextView _appNameTV;
-    TextView _totalTV;
-    TextView _overallTV;
     JSONObject _jsonObject;
 
     @Override
@@ -44,16 +51,8 @@ public class SendAppActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_app);
 
-        mLinearLayout = (LinearLayout) findViewById(R.id.AssessLayout);
         _sharedTV = (TextView) findViewById(R.id.sharedTV);
         _greetingTV = (TextView) findViewById(R.id.greetingTV);
-        _appNameTV = (TextView) findViewById(R.id.TV_APP_NAME);
-        _riskFactorsTV = (TextView) findViewById(R.id.TV_RISK_FACTORS);
-        _permissionDangersTV = (TextView) findViewById(R.id.TV_PERMISSION_DANGERS);
-        _systemPermissionsTV = (TextView) findViewById(R.id.TV_SYSTEM_PERMISSIONS);
-        _ratingTV = (TextView) findViewById(R.id.TV_RATING);
-        _totalTV = (TextView) findViewById(R.id.TV_TOTAL);
-        _overallTV = (TextView) findViewById(R.id.TV_OVERALL);
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -82,27 +81,75 @@ public class SendAppActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Toast.makeText(getApplicationContext(), R.string.assRecvd, Toast.LENGTH_LONG).show();
-                    loadJSONObject();
                     _greetingTV.setVisibility(View.GONE);
                     _sharedTV.setVisibility(View.GONE);
-                    mLinearLayout.setVisibility(View.VISIBLE);       // Make the assessments visible
                 }
             }, 3000);
 
         } else {
-//            _sharedTV.setText(R.string.whyYouNoLinkToApp);
+            _sharedTV.setText(R.string.whyYouNoLinkToApp);
         }
+
     }
 
-    public void loadJSONObject() {
-        String jsonString = null;
-        _jsonObject = null;
-        try {
+    public class ExpandableListDataPump{
+        private HashMap<String, List<String>> mExpandableListDetail;
+        private ArrayList<String> mRegularListViewData;
+        private JSONObject mJSONObject;
+        private String mFullURL;
+        Context mContext = SendAppActivity.this.getApplicationContext();
+
+        public Context getAppContext(){
+            return mContext;
+        }
+
+        public HashMap<String, List<String>> getExpandableListDetail(String appID) {
+            mExpandableListDetail = new HashMap<String, List<String>>();
+            mRegularListViewData = new ArrayList<String>();
+
+            // Initialize the JSONObject to say the report doesn't exist
+            mJSONObject = new JSONObject();
+            try {
+                mJSONObject.put("report_exists", "false");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // AppID
+            mRegularListViewData.add(appID);
+
+            Log.i("DataPump", "Starting the assessment");
+
+            // Start and complete the Risk Assessment report asynchronously
+            startAssessment(appID);
+            // Block until the report is retrieved
+            Handler handler = new Handler(Looper.getMainLooper());
+            try {
+                while(!mJSONObject.getString("report_exists").equals("true")){
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i("getData", "Waiting for the report to be done...");
+                        }
+                    }, 5000);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return mExpandableListDetail;
+        }
+
+        public ArrayList<String> getRegularListViewData(){
+            return mRegularListViewData;
+        }
+
+        private void startAssessment(final String appID){
+            // Start the risk assessment and return the full URL with the task id.
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url("http://androidrisk.uconn.edu/report/foobar")
+                    .url("http://androidrisk.uconn.edu/report/" + appID)
                     .build();
-
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -111,85 +158,119 @@ public class SendAppActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    if(response.isSuccessful() == false){
+                    if(!response.isSuccessful()){
                         throw new IOException("Unexpected code: " + response);
                     }
-
-                    String jsonData = response.body().string();
-                    Log.i("loadJSONObject string", jsonData);
-
                     try {
-                        _jsonObject = new JSONObject(jsonData);
-                        Log.i("loadJSONObject", _jsonObject.toString());
-
-                        final JSONObject score = _jsonObject.getJSONObject("score");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                parseRiskAssessment(score);
-                            }
-                        });
+                        String jsonData = response.body().string();
+                        mJSONObject = new JSONObject(jsonData);
+                        mFullURL = "http://androidrisk.uconn.edu/report/" + appID + "/" + mJSONObject.getString("task_id");
+                        Log.i("DataPump", "Done initializing the risk assessment");
+                        completeAssessment();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
-        } catch (Exception e){
-            e.printStackTrace();
         }
-        Log.i("Info", "Risk Assessment loaded!");
-//        return _jsonObject;
-    }
 
-    void parseRiskAssessment(JSONObject riskAssessment){
-        try {
-            Log.i("parseRiskAssessment", "Parsing!");
+        private void completeAssessment() throws JSONException {
+            // Every 5 seconds refresh the value of the JSON until the task is completed
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i("DataPump", "Running completeAssessment");
+                            OkHttpClient okHttpClient = new OkHttpClient();
+                            Request request = new Request.Builder()
+                                    .url(mFullURL)
+                                    .build();
+                            okHttpClient.newCall(request).enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    e.printStackTrace();
+                                }
 
-            // AppID
-            String appID = riskAssessment.getString("app_id");
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    if(!response.isSuccessful()){
+                                        throw new IOException("Unexpected code: " + response);
+                                    }
+                                    try {
+                                        String jsonData = response.body().string();
+                                        Log.i("completeAssessment", jsonData);
+                                        mJSONObject = new JSONObject(jsonData);
+                                        if(!mJSONObject.getString("report_exists").equals("true")){
+                                            // If the report doesn't exist yet, ping the server again
+                                            Log.i("DataPump", "Report doesn't exist yet");
+//                                        completeAssessment();
+                                        }
+                                        else{
+                                            // If it does exist, parse the assessment
+                                            parseAssessment();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    }, 5000);
+                }
+            });
+        }
 
-            // App name
-            String appName = riskAssessment.getString("app_name");
-            System.out.println(riskAssessment.getString("app_name"));
-            _appNameTV.setText(getString(R.string.TAG_APP_NAME, appName));
+        private void parseAssessment(){
+            try {
+                // Overall score
+                String overallScore = mJSONObject.getString("overall_score");
+                mRegularListViewData.add(overallScore);
 
-            String overallScore = riskAssessment.getString("overall_score");
-            _overallTV.setText(getString(R.string.TAG_OVERALL, overallScore));
+                // Permissions
+                JSONObject permissions = mJSONObject.getJSONObject("permissions");
+                // Dangerous permissions
+                JSONObject dangerous_permissions_json = permissions.getJSONObject("dangerous_permissions");
+                List<String> dangerous_permissions = new ArrayList<String>();
+                Iterator<?> dangerous_permissions_keys = dangerous_permissions_json.keys();
+                while (dangerous_permissions_keys.hasNext()){
+                    dangerous_permissions.add((String) dangerous_permissions_keys.next());
+                }
+                mExpandableListDetail.put("Dangerous Permissions", dangerous_permissions);
+                // Total points contributed
+                String dangerous_totalPointsContributed = permissions.getString("total_points_contributed");
+                dangerous_permissions.add(dangerous_totalPointsContributed);
 
-            // Permissions
-            JSONObject permissions = riskAssessment.getJSONObject("permissions");
+                // Rating
+                String rating = mJSONObject.getString("rating");
+                mRegularListViewData.add(rating);
 
-            // Dangerous permissions
-            JSONObject dangerous_permissions = permissions.getJSONObject("dangerous_permissions");
-            String dangerous_permissions_string = "";
-            Iterator<?> dangerous_permissions_keys = dangerous_permissions.keys();
-            while (dangerous_permissions_keys.hasNext()){
-                 dangerous_permissions_string += dangerous_permissions_keys.next() + "\n\t";
+                // Risk Factors
+                List<String> riskFactors = new ArrayList<String>();
+                JSONObject risk_factors = mJSONObject.getJSONObject("risk_factors");
+                JSONObject risk_factors_identified = risk_factors.getJSONObject("risk_factors_identified");
+                Iterator<?> risk_factors_keys = risk_factors_identified.keys();
+                while(risk_factors_keys.hasNext()){
+                    riskFactors.add((String) risk_factors_keys.next());
+                }
+                String risk_totalPointsContributed = risk_factors.getString("total_points_contributed");
+                riskFactors.add(risk_totalPointsContributed);
+                mExpandableListDetail.put("Risk Factors", riskFactors);
+
+                // Threats
+                List<String> threats = new ArrayList<String>();
+                JSONArray threats_array = mJSONObject.getJSONArray("threats");
+                for(int i=0; i<threats_array.length(); i++){
+                    threats.add(threats_array.getString(i));
+                }
+                mExpandableListDetail.put("Threats", threats);
+
+                Log.i("parseAssessment", "Done parsing");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            _permissionDangersTV.setText(getString(R.string.TAG_PERMISSION_DANGERS, dangerous_permissions_string));
-
-            // Total points contributed
-            String totalPointsContributed = permissions.getString("total_points_contributed");
-            _totalTV.setText(getString(R.string.TAG_TOTAL, totalPointsContributed));
-
-            // Rating
-            String rating = riskAssessment.getString("rating");
-            _ratingTV.setText(getString(R.string.TAG_RATING, rating));
-
-            // Risk Factors
-            JSONObject risk_factors = riskAssessment.getJSONObject("risk_factors");
-            JSONObject risk_factors_identified = risk_factors.getJSONObject("risk_factors_identified");
-            Iterator<?> risk_factors_keys = risk_factors_identified.keys();
-            String risk_factors_string = "";
-            while(risk_factors_keys.hasNext()){
-                risk_factors_string += risk_factors_keys.next() + "\n";
-            }
-            _riskFactorsTV.setText(getString(R.string.TAG_RISK_FACTORS, risk_factors_string));
-
-            Log.i("parseRiskAssessment", "Finally done with this!");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
