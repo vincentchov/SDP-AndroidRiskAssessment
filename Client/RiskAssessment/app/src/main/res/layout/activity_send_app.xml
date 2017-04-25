@@ -41,53 +41,23 @@
         android:visibility="invisible"
         android:id="@+id/AssessLayout">
 
-        <TextView
+        <ListView
+            android:id="@+id/generalListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_APP_NAME"
-            android:id="@+id/TV_APP_NAME"/>
+            />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RISK_FACTORS"
-            android:id="@+id/TV_RISK_FACTORS"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_PERMISSION_DANGERS"
-            android:id="@+id/TV_PERMISSION_DANGERS"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_SYSTEM_PERMISSIONS"
-            android:id="@+id/TV_SYSTEM_PERMISSIONS"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_TOTAL"
-            android:id="@+id/TV_TOTAL"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_OVERALL"
-            android:id="@+id/TV_OVERALL"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/TAG_RATING"
-            android:id="@+id/TV_RATING"/>
+            <ExpandableListView
+                android:id="@+id/expandableListView"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                >
+            </ExpandableListView>
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

@@ -1,10 +1,8 @@
 package com.vincentchov.android.riskassessment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,25 +33,26 @@ import okhttp3.Response;
 
 
 public class SendAppActivity extends AppCompatActivity {
-    ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
-    List<String> generalInfoList;
-    ListView generalListView;
-    ArrayAdapter generalListViewAdapter;
+    ExpandableListView mExpandableListView;
+    ExpandableListAdapter mExpandableListAdapter;
+    List<String> mExpandableListTitle;
+    HashMap<String, List<String>> mExpandableListDetail;
+    List<String> mGeneralInfoList;
+    ListView mGeneralListView;
+    ArrayAdapter mGeneralListViewAdapter;
+    LinearLayout mLinearLayout;
 
-    TextView _sharedTV;
-    TextView _greetingTV;
-    JSONObject _jsonObject;
+    TextView mSharedTV;
+    TextView mGreetingTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_app);
 
-        _sharedTV = (TextView) findViewById(R.id.sharedTV);
-        _greetingTV = (TextView) findViewById(R.id.greetingTV);
+        mSharedTV = (TextView) findViewById(R.id.sharedTV);
+        mGreetingTV = (TextView) findViewById(R.id.greetingTV);
+        mLinearLayout = (LinearLayout) findViewById(R.id.AssessLayout);
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -71,39 +71,48 @@ public class SendAppActivity extends AppCompatActivity {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null && sharedText.contains("play.google.com/store/apps")) {
             // Update UI to reflect text being shared
-            _sharedTV.setText(sharedText);
+            mGreetingTV.setText(getString(R.string.greeting));
+            mSharedTV.setText(sharedText);
             Toast.makeText(getApplicationContext(), R.string.sentRequest, Toast.LENGTH_LONG).show();
 
+            ExpandableListDataPump.mContext = this;
+            mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+            mExpandableListDetail = ExpandableListDataPump.getExpandableListDetail("com.google.earth");
+            mExpandableListTitle = new ArrayList<String>(mExpandableListDetail.keySet());
+            mExpandableListAdapter = new CustomExpandableListAdapter(this, mExpandableListTitle, mExpandableListDetail);
+            mExpandableListView.setAdapter(mExpandableListAdapter);
 
-            // Wait two seconds
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getApplicationContext(), R.string.assRecvd, Toast.LENGTH_LONG).show();
-                    _greetingTV.setVisibility(View.GONE);
-                    _sharedTV.setVisibility(View.GONE);
-                }
-            }, 3000);
+            mGeneralListView = (ListView) findViewById(R.id.generalListView);
+            mGeneralInfoList = ExpandableListDataPump.getRegularListViewData();
+            mGeneralListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mGeneralInfoList);
+            mGeneralListView.setAdapter(mGeneralListViewAdapter);
+            Log.i("SendAppActivity", "Done setting adapters");
 
+            Toast.makeText(getApplicationContext(), R.string.assRecvd, Toast.LENGTH_LONG).show();
+            mGreetingTV.setVisibility(View.GONE);
+            mSharedTV.setVisibility(View.GONE);
+
+            // Make the ListViews visible
+            mLinearLayout.setVisibility(View.VISIBLE);
         } else {
-            _sharedTV.setText(R.string.whyYouNoLinkToApp);
+            mSharedTV.setText(R.string.whyYouNoLinkToApp);
+            
         }
-
     }
 
-    public class ExpandableListDataPump{
-        private HashMap<String, List<String>> mExpandableListDetail;
-        private ArrayList<String> mRegularListViewData;
-        private JSONObject mJSONObject;
-        private String mFullURL;
-        Context mContext = SendAppActivity.this.getApplicationContext();
+    public static class ExpandableListDataPump{
+        private static HashMap<String, List<String>> mExpandableListDetail;
+        private static ArrayList<String> mRegularListViewData;
+        private static JSONObject mJSONObject;
+        private static JSONObject mScoreObject;
+        private static String mFullURL;
+        static Context mContext;
 
         public Context getAppContext(){
             return mContext;
         }
 
-        public HashMap<String, List<String>> getExpandableListDetail(String appID) {
+        public static HashMap<String, List<String>> getExpandableListDetail(String appID) {
             mExpandableListDetail = new HashMap<String, List<String>>();
             mRegularListViewData = new ArrayList<String>();
 
@@ -123,28 +132,22 @@ public class SendAppActivity extends AppCompatActivity {
             // Start and complete the Risk Assessment report asynchronously
             startAssessment(appID);
             // Block until the report is retrieved
-            Handler handler = new Handler(Looper.getMainLooper());
             try {
                 while(!mJSONObject.getString("report_exists").equals("true")){
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i("getData", "Waiting for the report to be done...");
-                        }
-                    }, 5000);
+                    Thread.sleep(5000);
                 }
-            } catch (JSONException e) {
+            } catch (JSONException | InterruptedException e) {
                 e.printStackTrace();
             }
 
             return mExpandableListDetail;
         }
 
-        public ArrayList<String> getRegularListViewData(){
+        public static ArrayList<String> getRegularListViewData(){
             return mRegularListViewData;
         }
 
-        private void startAssessment(final String appID){
+        private static void startAssessment(final String appID){
             // Start the risk assessment and return the full URL with the task id.
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder()
@@ -174,63 +177,56 @@ public class SendAppActivity extends AppCompatActivity {
             });
         }
 
-        private void completeAssessment() throws JSONException {
-            // Every 5 seconds refresh the value of the JSON until the task is completed
-            ((Activity) mContext).runOnUiThread(new Runnable() {
+        private static void completeAssessment() {
+            Log.i("DataPump", "Running completeAssessment");
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(mFullURL)
+                    .build();
+            okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
-                public void run() {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i("DataPump", "Running completeAssessment");
-                            OkHttpClient okHttpClient = new OkHttpClient();
-                            Request request = new Request.Builder()
-                                    .url(mFullURL)
-                                    .build();
-                            okHttpClient.newCall(request).enqueue(new Callback() {
-                                @Override
-                                public void onFailure(Call call, IOException e) {
-                                    e.printStackTrace();
-                                }
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
 
-                                @Override
-                                public void onResponse(Call call, Response response) throws IOException {
-                                    if(!response.isSuccessful()){
-                                        throw new IOException("Unexpected code: " + response);
-                                    }
-                                    try {
-                                        String jsonData = response.body().string();
-                                        Log.i("completeAssessment", jsonData);
-                                        mJSONObject = new JSONObject(jsonData);
-                                        if(!mJSONObject.getString("report_exists").equals("true")){
-                                            // If the report doesn't exist yet, ping the server again
-                                            Log.i("DataPump", "Report doesn't exist yet");
-//                                        completeAssessment();
-                                        }
-                                        else{
-                                            // If it does exist, parse the assessment
-                                            parseAssessment();
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
+                @Override
+                public void onResponse(Call call, Response response) {
+                    if(!response.isSuccessful()){
+                        System.out.println(response);
+                    }
+                    try {
+                        String jsonData = response.body().string();
+                        Log.i("completeAssessment", jsonData);
+                        mJSONObject = new JSONObject(jsonData);
+                        if(!mJSONObject.getString("report_exists").equals("true")){
+                            // If the report doesn't exist yet, ping the server again
+                            Log.i("DataPump", "Report doesn't exist yet");
+                            Thread.sleep(5000);
+                            completeAssessment();
                         }
-                    }, 5000);
+                        else{
+                            // If it does exist, parse the assessment
+                            Log.i("completeAssessment", response.body().toString());
+                            parseAssessment();
+                        }
+                    } catch (JSONException | IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
 
-        private void parseAssessment(){
+        private static void parseAssessment(){
+            Log.i("parseAssessment", "Running parseAssessment");
             try {
-                // Overall score
-                String overallScore = mJSONObject.getString("overall_score");
+                // Overall scored
+                mScoreObject = mJSONObject.getJSONObject("score");
+
+                String overallScore = mScoreObject.getString("overall_score");
                 mRegularListViewData.add(overallScore);
 
                 // Permissions
-                JSONObject permissions = mJSONObject.getJSONObject("permissions");
+                JSONObject permissions = mScoreObject.getJSONObject("permissions");
                 // Dangerous permissions
                 JSONObject dangerous_permissions_json = permissions.getJSONObject("dangerous_permissions");
                 List<String> dangerous_permissions = new ArrayList<String>();
@@ -244,12 +240,12 @@ public class SendAppActivity extends AppCompatActivity {
                 dangerous_permissions.add(dangerous_totalPointsContributed);
 
                 // Rating
-                String rating = mJSONObject.getString("rating");
+                String rating = mScoreObject.getString("rating");
                 mRegularListViewData.add(rating);
 
                 // Risk Factors
                 List<String> riskFactors = new ArrayList<String>();
-                JSONObject risk_factors = mJSONObject.getJSONObject("risk_factors");
+                JSONObject risk_factors = mScoreObject.getJSONObject("risk_factors");
                 JSONObject risk_factors_identified = risk_factors.getJSONObject("risk_factors_identified");
                 Iterator<?> risk_factors_keys = risk_factors_identified.keys();
                 while(risk_factors_keys.hasNext()){
@@ -261,7 +257,7 @@ public class SendAppActivity extends AppCompatActivity {
 
                 // Threats
                 List<String> threats = new ArrayList<String>();
-                JSONArray threats_array = mJSONObject.getJSONArray("threats");
+                JSONArray threats_array = mScoreObject.getJSONArray("threats");
                 for(int i=0; i<threats_array.length(); i++){
                     threats.add(threats_array.getString(i));
                 }
@@ -273,5 +269,4 @@ public class SendAppActivity extends AppCompatActivity {
             }
         }
     }
-
 }

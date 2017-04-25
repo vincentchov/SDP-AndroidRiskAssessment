@@ -38,17 +38,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ExpandableListDataPump.mContext = this;
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListDetail = ExpandableListDataPump.getExpandableListDetail("com.google.earth");
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
 
-        generalListView = (ListView) findViewById(R.id.generalListView);
-        generalInfoList = ExpandableListDataPump.getRegularListViewData();
-        generalListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, generalInfoList);
-        generalListView.setAdapter(generalListViewAdapter);
+//        ExpandableListDataPump.mContext = this;
+//        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+//        expandableListDetail = ExpandableListDataPump.getExpandableListDetail("com.google.earth");
+//        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+//        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
+//        expandableListView.setAdapter(expandableListAdapter);
+//
+//        generalListView = (ListView) findViewById(R.id.generalListView);
+//        generalInfoList = ExpandableListDataPump.getRegularListViewData();
+//        generalListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, generalInfoList);
+//        generalListView.setAdapter(generalListViewAdapter);
 
         Log.i("MainActivity", "Done setting adapters");
     }
