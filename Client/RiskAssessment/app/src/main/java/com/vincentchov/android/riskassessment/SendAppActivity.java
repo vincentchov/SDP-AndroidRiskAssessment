@@ -69,15 +69,30 @@ public class SendAppActivity extends AppCompatActivity {
 
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText != null && sharedText.contains("play.google.com/store/apps")) {
+        if (sharedText != null && sharedText.contains("play.google.com/store/apps/details")) {
             // Update UI to reflect text being shared
             mGreetingTV.setText(getString(R.string.greeting));
             mSharedTV.setText(sharedText);
             Toast.makeText(getApplicationContext(), R.string.sentRequest, Toast.LENGTH_LONG).show();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            String[] url_args = sharedText.split("\\?");
+            String appID = "";
+            for(String substring : url_args){
+                String[] arg = substring.split("\\=");
+                if (arg[0].equals("id")){
+                    appID = arg[1];
+                    break;
+                }
+            }
 
             ExpandableListDataPump.mContext = this;
             mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-            mExpandableListDetail = ExpandableListDataPump.getExpandableListDetail("com.google.earth");
+            mExpandableListDetail = ExpandableListDataPump.getExpandableListDetail(appID);
             mExpandableListTitle = new ArrayList<String>(mExpandableListDetail.keySet());
             mExpandableListAdapter = new CustomExpandableListAdapter(this, mExpandableListTitle, mExpandableListDetail);
             mExpandableListView.setAdapter(mExpandableListAdapter);
@@ -96,7 +111,7 @@ public class SendAppActivity extends AppCompatActivity {
             mLinearLayout.setVisibility(View.VISIBLE);
         } else {
             mSharedTV.setText(R.string.whyYouNoLinkToApp);
-            
+
         }
     }
 
@@ -125,7 +140,7 @@ public class SendAppActivity extends AppCompatActivity {
             }
 
             // AppID
-            mRegularListViewData.add(appID);
+            mRegularListViewData.add("AppID: " + appID);
 
             Log.i("DataPump", "Starting the assessment");
 
@@ -135,6 +150,7 @@ public class SendAppActivity extends AppCompatActivity {
             try {
                 while(!mJSONObject.getString("report_exists").equals("true")){
                     Thread.sleep(5000);
+                    Toast.makeText(mContext, "Waiting on the server...", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException | InterruptedException e) {
                 e.printStackTrace();
@@ -207,7 +223,12 @@ public class SendAppActivity extends AppCompatActivity {
                         else{
                             // If it does exist, parse the assessment
                             Log.i("completeAssessment", response.body().toString());
-                            parseAssessment();
+                            if(mJSONObject.getString("task_state").equals("SUCCESS")){
+                                parseAssessment();
+                            }
+                            else{
+                                Toast.makeText(mContext, "Risk assessment failed!", Toast.LENGTH_LONG).show();
+                            }
                         }
                     } catch (JSONException | IOException | InterruptedException e) {
                         e.printStackTrace();
@@ -223,7 +244,7 @@ public class SendAppActivity extends AppCompatActivity {
                 mScoreObject = mJSONObject.getJSONObject("score");
 
                 String overallScore = mScoreObject.getString("overall_score");
-                mRegularListViewData.add(overallScore);
+                mRegularListViewData.add("Overall score: " + overallScore);
 
                 // Permissions
                 JSONObject permissions = mScoreObject.getJSONObject("permissions");
@@ -234,14 +255,17 @@ public class SendAppActivity extends AppCompatActivity {
                 while (dangerous_permissions_keys.hasNext()){
                     dangerous_permissions.add((String) dangerous_permissions_keys.next());
                 }
+                if(dangerous_permissions_json.length() == 0){
+                    dangerous_permissions.add("No dangerous permissions found");
+                }
                 mExpandableListDetail.put("Dangerous Permissions", dangerous_permissions);
                 // Total points contributed
                 String dangerous_totalPointsContributed = permissions.getString("total_points_contributed");
-                dangerous_permissions.add(dangerous_totalPointsContributed);
+                dangerous_permissions.add("Total points contributed: " + dangerous_totalPointsContributed);
 
                 // Rating
                 String rating = mScoreObject.getString("rating");
-                mRegularListViewData.add(rating);
+                mRegularListViewData.add("Rating: " + rating);
 
                 // Risk Factors
                 List<String> riskFactors = new ArrayList<String>();
@@ -251,8 +275,11 @@ public class SendAppActivity extends AppCompatActivity {
                 while(risk_factors_keys.hasNext()){
                     riskFactors.add((String) risk_factors_keys.next());
                 }
+                if(risk_factors_identified.length() == 0){
+                    riskFactors.add("No major risk factors found");
+                }
                 String risk_totalPointsContributed = risk_factors.getString("total_points_contributed");
-                riskFactors.add(risk_totalPointsContributed);
+                riskFactors.add("Total points contributed: " + risk_totalPointsContributed);
                 mExpandableListDetail.put("Risk Factors", riskFactors);
 
                 // Threats
@@ -260,6 +287,9 @@ public class SendAppActivity extends AppCompatActivity {
                 JSONArray threats_array = mScoreObject.getJSONArray("threats");
                 for(int i=0; i<threats_array.length(); i++){
                     threats.add(threats_array.getString(i));
+                }
+                if(threats_array.length() == 0){
+                    threats.add("No major threats found");
                 }
                 mExpandableListDetail.put("Threats", threats);
 
