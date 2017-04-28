@@ -2,10 +2,8 @@ package com.vincentchov.android.riskassessment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListAdapter;
@@ -101,7 +99,6 @@ public class SendAppActivity extends AppCompatActivity {
             mGeneralInfoList = ExpandableListDataPump.getRegularListViewData();
             mGeneralListViewAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mGeneralInfoList);
             mGeneralListView.setAdapter(mGeneralListViewAdapter);
-            Log.i("SendAppActivity", "Done setting adapters");
 
             Toast.makeText(getApplicationContext(), R.string.assRecvd, Toast.LENGTH_LONG).show();
             mGreetingTV.setVisibility(View.GONE);
@@ -141,8 +138,6 @@ public class SendAppActivity extends AppCompatActivity {
 
             // AppID
             mRegularListViewData.add("AppID: " + appID);
-
-            Log.i("DataPump", "Starting the assessment");
 
             // Start and complete the Risk Assessment report asynchronously
             startAssessment(appID);
@@ -184,7 +179,6 @@ public class SendAppActivity extends AppCompatActivity {
                         String jsonData = response.body().string();
                         mJSONObject = new JSONObject(jsonData);
                         mFullURL = "http://androidrisk.uconn.edu/report/" + appID + "/" + mJSONObject.getString("task_id");
-                        Log.i("DataPump", "Done initializing the risk assessment");
                         completeAssessment();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -194,7 +188,6 @@ public class SendAppActivity extends AppCompatActivity {
         }
 
         private static void completeAssessment() {
-            Log.i("DataPump", "Running completeAssessment");
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(mFullURL)
@@ -212,17 +205,14 @@ public class SendAppActivity extends AppCompatActivity {
                     }
                     try {
                         String jsonData = response.body().string();
-                        Log.i("completeAssessment", jsonData);
                         mJSONObject = new JSONObject(jsonData);
                         if(mJSONObject.getString("task_state").equals("PENDING")){
                             // If the report doesn't exist yet, ping the server again
-                            Log.i("DataPump", "Report doesn't exist yet");
                             Thread.sleep(5000);
                             completeAssessment();
                         }
                         else{
                             // If it does exist, parse the assessment
-                            Log.i("completeAssessment", response.body().toString());
                             if(mJSONObject.getString("task_state").equals("SUCCESS")){
                                 parseAssessment();
                             }
@@ -238,7 +228,6 @@ public class SendAppActivity extends AppCompatActivity {
         }
 
         private static void parseAssessment(){
-            Log.i("parseAssessment", "Running parseAssessment");
             try {
                 // Overall scored
                 mScoreObject = mJSONObject.getJSONObject("score");
@@ -293,7 +282,6 @@ public class SendAppActivity extends AppCompatActivity {
                 }
                 mExpandableListDetail.put("Threats", threats);
 
-                Log.i("parseAssessment", "Done parsing");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
