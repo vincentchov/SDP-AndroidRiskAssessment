@@ -214,7 +214,7 @@ public class SendAppActivity extends AppCompatActivity {
                         String jsonData = response.body().string();
                         Log.i("completeAssessment", jsonData);
                         mJSONObject = new JSONObject(jsonData);
-                        if(!mJSONObject.getString("report_exists").equals("true")){
+                        if(mJSONObject.getString("task_state").equals("PENDING")){
                             // If the report doesn't exist yet, ping the server again
                             Log.i("DataPump", "Report doesn't exist yet");
                             Thread.sleep(5000);
